@@ -6,7 +6,7 @@
 import java.util.*
 import kotlin.random.Random
 
- const val reset = "\u001B[0m"
+ const val reset = "\u001b[0m"
  const val box = "\u001b[51m"
  const val bold = "\u001b[1m"
  const val underline = "\u001b[21m"
@@ -16,6 +16,7 @@ import kotlin.random.Random
  const val bgGreen = "\u001b[48;5;28m"
  const val bgGray = "\u001b[47m"
  const val red = "\u001b[31m"
+ const val cyan = "\u001b[38;5;87m"
  const val green = "\u001b[38;5;10m"
  const val gold = "\u001b[33m"
  const val yellow = "\u001b[38;5;11m"
@@ -25,8 +26,8 @@ import kotlin.random.Random
  const val purple = "\u001b[38;5;99m"
  const val blue = "\u001b[38;5;69m"
 
-fun instruccions (){
-    //INSTRUCCIONS
+
+fun instruccions (){     //INSTRUCCIONS
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     do {
         println("Benvingut\nA continuació t'explicaré les ${underline}instruccions:$reset")
@@ -65,8 +66,25 @@ fun codi() {
     val historyList: MutableList<String> = mutableListOf()
     println(random)
     do {
-        println("Entra la teva paraula")
-        val userGuess = scanner.nextLine().uppercase()
+        var userGuess: String
+        do {
+            var lletraRepetida = false
+            println("Entra la teva paraula")
+            userGuess = scanner.nextLine().uppercase()
+            for (lletra in 0..userGuess.lastIndex){
+                for (repetida in lletra+1..userGuess.lastIndex){
+                    if (userGuess[lletra] == userGuess[repetida]){
+                        lletraRepetida = true
+                    }
+                }
+            }
+            if (lletraRepetida){
+                println("$underline$red${bold}No$reset pots repetir lletra a la paraula")
+            }
+            if (userGuess.length != 5){
+                println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
+            }
+        } while (lletraRepetida || userGuess.length != 5)
         if (userGuess==random){
             println ("Has encertat la paraula $green$bold$box $random! $reset" )
             println("""- Si vols tornar a començar entra $pink$bold$box AGAIN $reset
@@ -85,15 +103,12 @@ fun codi() {
             for (lletra in 0..userGuess.lastIndex) {
                 if (userGuess[lletra] !in random) { // No está
                    history += (bgGray + black + userGuess[lletra] + reset)
-                // print (bgGray + black + userGuess[lletra] + reset)
-                }
-                if (userGuess[lletra] in random  && userGuess[lletra] != random[lletra]){ // Posición incorrecta
-                    history += (bgGold+ black + userGuess[lletra] + reset)
-                    //print (bgGold+ black + userGuess[lletra] + reset)
                 }
                 if (userGuess[lletra] == random[lletra]){ // Posición correcta
-                    history += (bgGreen+ black + userGuess[lletra] + reset)
-                    //print (bgGreen+ black + userGuess[lletra] + reset)
+                    history += ( bgGreen+ black + userGuess[lletra] + reset)
+                }
+                if (userGuess[lletra] in random  && userGuess[lletra] != random[lletra]){ // Posición incorrecta
+                    history += ( bgGold+ black + userGuess[lletra] + reset)
                 }
             }
             historyList.add(history) //añade la palabra al historial
@@ -102,9 +117,9 @@ fun codi() {
             }
             intents--
         }
-        if (intents!=0 && userGuess!=random) println("\nEt queden $intents intents")
+        if (intents!=0 && userGuess!=random) println("\nEt queden $cyan$bold$box $intents $reset intents")
         if (intents==0) {
-            println("\n Ja no et queden intents :( $reset")
+            println("\n $box Ja no et queden intents :( $reset")
             println("""- Si vols tornar a començar entra $pink$bold$box AGAIN $reset
                  |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
                  |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
@@ -121,6 +136,27 @@ fun codi() {
 
 
 /*/
+fun verification() {
+   var userGuess=""
+        do {
+            val scanner = Scanner(System.`in`).useLocale(Locale.UK)
+            var lletraRepetida = false
+            println("Entra la teva paraula")
+            userGuess = scanner.nextLine().uppercase()
+            for (lletra in 0..userGuess.lastIndex){
+                for (repetida in lletra+1..userGuess.lastIndex){
+                    if (userGuess[lletra] == userGuess[repetida]){
+                        lletraRepetida = true
+                    }
+                }
+            }
+            if (lletraRepetida){
+                println("No pots repetir lletra a la paraula")
+            }
+        } while (lletraRepetida)
+}
+
+
  TODO
   - Interfaz
   - Nombre Usuario
