@@ -6,6 +6,11 @@
 import java.util.*
 import kotlin.random.Random
 
+/**
+ * These constants are used to color the foreground and background of each character when needed
+ * Write the name or names of the constants you want to use before the next word or character and then
+ * use the constant "reset" after the desired word or character to end the formatting
+ */
  const val reset = "\u001b[0m"
  const val box = "\u001b[51m"
  const val bold = "\u001b[1m"
@@ -26,7 +31,10 @@ import kotlin.random.Random
  const val purple = "\u001b[38;5;99m"
  const val blue = "\u001b[38;5;69m"
 
-
+/**
+ * This function is for explaining the user the instructions of the game
+ * - Will ask the user to type "START" to begin the game
+ */
 fun instruccions (){     //INSTRUCCIONS
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     do {
@@ -43,12 +51,18 @@ fun instruccions (){     //INSTRUCCIONS
     } while (start != "START")
 }
 
+/**
+ * The main fuction will call in order other functions
+ */
 fun main() {
     instruccions()
     interfaz()
     codi()
 }
-
+/**
+ * The interfaz fuction will ask the user a name and will welcome them
+ * WORK IN PROGRESS
+ */
 fun interfaz() {
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     println("$box Entra el teu nom $reset")
@@ -56,6 +70,23 @@ fun interfaz() {
     println("$box Benvingut $name $reset")
 }
 
+/**
+ * The codi function is where the word pool of the game and all the logic of the application lies.
+ * - First will take a random word from the wordPool and will ask the user for a Word
+ * - If the word has repeated chars or doesn't have a length of 5 chars it will throw a warning and will ask
+ * for a word again.
+ * - When the word is accepted and isn't the right guess:
+ * - It will scan every char at the userGuess word and compare the position with the same position
+ * of the char of the random word and at the same time will be colored based on the position and added
+ * to a variable called "history"
+ * - Then it will be added to a list called "historyList" and with each iteration will print the content
+ * of the list creating the history of the game
+ * - Last it will rest 1 try
+ * - When the word is the right word:
+ * - Will print a congratulations message with the correct word
+ * - If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
+ * read the rules or stop playing.
+ */
 fun codi() {
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
@@ -134,29 +165,7 @@ fun codi() {
     } while (userGuess!=random && intents != 0)
 }
 
-
-/*/
-fun verification() {
-   var userGuess=""
-        do {
-            val scanner = Scanner(System.`in`).useLocale(Locale.UK)
-            var lletraRepetida = false
-            println("Entra la teva paraula")
-            userGuess = scanner.nextLine().uppercase()
-            for (lletra in 0..userGuess.lastIndex){
-                for (repetida in lletra+1..userGuess.lastIndex){
-                    if (userGuess[lletra] == userGuess[repetida]){
-                        lletraRepetida = true
-                    }
-                }
-            }
-            if (lletraRepetida){
-                println("No pots repetir lletra a la paraula")
-            }
-        } while (lletraRepetida)
-}
-
-
+/*
  TODO
   - Interfaz
   - Nombre Usuario
