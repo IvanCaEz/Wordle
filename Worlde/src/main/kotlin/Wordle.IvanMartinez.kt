@@ -19,6 +19,7 @@ import kotlin.random.Random
  const val bgBlue = "\u001b[48;5;31m"
  const val bgRed = "\u001b[41m"
  const val bgGreen = "\u001b[48;5;28m"
+const val bgPurple = "\u001b[48;5;99m"
  const val bgGray = "\u001b[47m"
  const val red = "\u001b[31m"
  const val cyan = "\u001b[38;5;87m"
@@ -65,9 +66,9 @@ fun main() {
  */
 fun interfaz() {
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
-    println("$box Entra el teu nom $reset")
+    println("Entra el teu nom $reset")
     val name = scanner.nextLine()
-    println("$box Benvingut $name $reset")
+    println("Benvingut $box$gold $name $reset")
 }
 
 /**
@@ -83,7 +84,7 @@ fun interfaz() {
  * of the list creating the history of the game
  * - Last it will rest 1 try
  * - When the word is the right word:
- * - Will print a congratulations message with the correct word
+ * - Will print a congratulation message with the correct word
  * - If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
  * read the rules or stop playing.
  */
@@ -130,7 +131,7 @@ fun codi() {
             }
         }
         if (userGuess!=random) {
-            var history = "\n"
+            var history = ""
             for (lletra in 0..userGuess.lastIndex) {
                 if (userGuess[lletra] !in random) { // No está
                    history += (bgGray + black + userGuess[lletra] + reset)
@@ -144,7 +145,10 @@ fun codi() {
             }
             historyList.add(history) //añade la palabra al historial
             for (word in 0..historyList.lastIndex){
-                print (historyList[word])
+                println("╔═══════╗")
+                println("║ ${historyList[word]} ║")
+                println("╚═══════╝")
+
             }
             intents--
         }
@@ -171,4 +175,9 @@ fun codi() {
   - Nombre Usuario
   - Pensar cuando el usuario es retarded
   - Limpiar
+
+  println("$bgPurple$pink==================$reset")
+                println("$bgPurple$pink||$reset\t  ${historyList[word]} \t$bgPurple$pink||$reset")
+                if (word == historyList.lastIndex) {
+                    println("$bgPurple$pink==================$reset")
  */
