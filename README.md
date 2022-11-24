@@ -7,10 +7,11 @@ Use git to clone this repository into your computer.
 
 > git clone https://gitlab.com/ivan.martinez.7e6/wordle
 
+---
 
 ## Formatting the Output
 
-In this project we will use some constant variables to
+In this project we will make use of variables to
 color the foreground and background of each character
 when needed.
 
@@ -18,7 +19,7 @@ when needed.
 
 * Write the name or names of the constants you want
 to use before the next word or character
-* Use the constant `reset` after the desired word or character to end the formatting
+* Use the variable `reset` after the desired word or character to end the formatting
 
 ---
 

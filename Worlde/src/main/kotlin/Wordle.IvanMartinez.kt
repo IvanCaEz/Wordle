@@ -4,7 +4,6 @@
 * TITLE: Wordle
 */
 import java.util.*
-import kotlin.random.Random
 
 /**
  * These constants are used to color the foreground and background of each character when needed
@@ -16,39 +15,38 @@ import kotlin.random.Random
  const val bold = "\u001b[1m"
  const val underline = "\u001b[21m"
  const val bgGold = "\u001b[43m"
- const val bgBlue = "\u001b[48;5;31m"
- const val bgRed = "\u001b[41m"
  const val bgGreen = "\u001b[48;5;28m"
-const val bgPurple = "\u001b[48;5;99m"
  const val bgGray = "\u001b[47m"
  const val red = "\u001b[31m"
  const val cyan = "\u001b[38;5;87m"
  const val green = "\u001b[38;5;10m"
  const val gold = "\u001b[33m"
  const val yellow = "\u001b[38;5;11m"
- const val black = "\u001b[30m"
  const val gray = "\u001b[38;5;7m"
  const val pink = "\u001b[38;5;207m"
  const val purple = "\u001b[38;5;99m"
  const val blue = "\u001b[38;5;69m"
 
 /**
- * This function is for explaining the user the instructions of the game
+ * This function will explain the user the instructions of the game
  * - Will ask the user to type "START" to begin the game
  */
 fun instruccions (){     //INSTRUCCIONS
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     do {
-        println("Benvingut\nA continuació t'explicaré les ${underline}instruccions:$reset")
+        println("$yellow$bold✩°｡⋆ $purple$bold Benvingut / Benvinguda! $pink(*•ᴗ•*)ノﾞ  $yellow$bold⋆｡°✩$reset  ")
+        println("A continuació t'explicaré les ${underline}instruccions:$reset  ")
         println("- Tens $underline${bold}6 intents$reset per endevinar la paraula generada")
         println("- Les paraules tenen $underline${bold}5$reset lletres")
-        println("- La paraula generada $underline${bold}no$reset repeteix lletres")
-        println("""- Si la lletra introduida es possa ${gray}gris$reset vol dir que no existeix a la paraula
-        |- Si es possa ${yellow}groga$reset vol dir que existeix però no està a la posició correcta
-        |- Si es possa ${green}verda$reset vol dir que està a la posició correcta
+        println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
+        println("""- Si el fons de la lletra introduida es possa ${gray}gris$reset vol dir que no existeix a la paraula
+        |- Si es possa ${yellow}groc$reset vol dir que existeix però no està a la posició correcta                                                                               ║
+        |- Si es possa ${green}verd$reset vol dir que està a la posició correcta
     """.trimMargin())
-        println("Per començar a jugar entra $bold$box$purple START $reset")
+        println("Per començar a jugar entra $yellow$bold✩°｡⋆$bold$box$purple START $reset$yellow$bold⋆｡°✩$reset")
+
         val start = scanner.nextLine().uppercase()
+
     } while (start != "START")
 }
 
@@ -57,18 +55,7 @@ fun instruccions (){     //INSTRUCCIONS
  */
 fun main() {
     instruccions()
-    interfaz()
     codi()
-}
-/**
- * The interfaz fuction will ask the user a name and will welcome them
- * WORK IN PROGRESS
- */
-fun interfaz() {
-    val scanner = Scanner(System.`in`).useLocale(Locale.UK)
-    println("Entra el teu nom $reset")
-    val name = scanner.nextLine()
-    println("Benvingut $box$gold $name $reset")
 }
 
 /**
@@ -95,8 +82,10 @@ fun codi() {
         "Tecla","Digne","Força","Apunt")
     val random = wordPool.random().uppercase()
     var intents = 6
+    var ronda = 0
     val historyList: MutableList<String> = mutableListOf()
-    println(random)
+    println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
+    // println(random) Treure el comentari per veure la paraula i fer proves
     do {
         var userGuess: String
         do {
@@ -117,11 +106,52 @@ fun codi() {
                 println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
             }
         } while (lletraRepetida || userGuess.length != 5)
+
+        var history = ""
+        if (userGuess!=random) {
+            for (lletra in 0..userGuess.lastIndex) {
+                if (userGuess[lletra] !in random) { // No está
+                   history +=  (" $box$bgGray ${userGuess[lletra]} $reset ")
+                }
+                if (userGuess[lletra] == random[lletra]){ // Posición correcta
+                    history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
+                }
+                if (userGuess[lletra] in random  && userGuess[lletra] != random[lletra]){ // Posición incorrecta
+                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+                }
+            }
+            historyList.add(history) //añade la palabra al historial
+            for (word in 0..historyList.lastIndex){
+                println("╔═════════════════════$cyan$bold$box ${6-word} $reset═╗")
+                println("║${historyList[word]}║")
+                println("╚═════════════════════════╝")
+            }
+            intents--
+            ronda++
+        }
         if (userGuess==random){
-            println ("Has encertat la paraula $green$bold$box $random! $reset" )
-            println("""- Si vols tornar a començar entra $pink$bold$box AGAIN $reset
-                 |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
-                 |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
+            for (lletra in 0..userGuess.lastIndex) {
+                if (userGuess[lletra] == random[lletra]) { // Posición correcta
+                    history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
+                }
+            }
+            historyList.add(history)
+            for (word in 0..historyList.lastIndex){
+                println("╔═════════════════════$cyan$bold$box ${6-word} $reset═╗")
+                println("║${historyList[word]}║")
+                println("╚═════════════════════════╝")
+            }
+            if (ronda==0){
+                println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
+            }
+            else {
+                println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box ${ronda+1} $reset intents! $yellow$bold⋆｡°✩$reset\n" )
+            }
+            println("""- Si vols tornar a jugar entra $pink$bold$box AGAIN $reset
+                |
+                |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
+                |
+                |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
             val again = scanner.nextLine()
             if (again.uppercase() == "AGAIN"){
                 codi()
@@ -129,35 +159,20 @@ fun codi() {
             if (again.uppercase() == "HELP") {
                 main()
             }
-        }
-        if (userGuess!=random) {
-            var history = ""
-            for (lletra in 0..userGuess.lastIndex) {
-                if (userGuess[lletra] !in random) { // No está
-                   history += (bgGray + black + userGuess[lletra] + reset)
-                }
-                if (userGuess[lletra] == random[lletra]){ // Posición correcta
-                    history += ( bgGreen+ black + userGuess[lletra] + reset)
-                }
-                if (userGuess[lletra] in random  && userGuess[lletra] != random[lletra]){ // Posición incorrecta
-                    history += ( bgGold+ black + userGuess[lletra] + reset)
-                }
+            if (again.uppercase() == "EXIT") {
+                println("Fins un altre $pink$bold(~‾▿‾)~$reset")
             }
-            historyList.add(history) //añade la palabra al historial
-            for (word in 0..historyList.lastIndex){
-                println("╔═══════╗")
-                println("║ ${historyList[word]} ║")
-                println("╚═══════╝")
-
-            }
-            intents--
         }
-        if (intents!=0 && userGuess!=random) println("\nEt queden $cyan$bold$box $intents $reset intents")
+        if (intents!=0 && userGuess!=random){
+            println("\nEt queden $cyan$bold$box $intents $reset intents\n")
+        }
         if (intents==0) {
-            println("\n $box Ja no et queden intents :( $reset")
-            println("""- Si vols tornar a començar entra $pink$bold$box AGAIN $reset
-                 |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
-                 |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
+            println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
+            println("""- Si vols tornar a jugar entra $pink$bold$box AGAIN $reset
+                |
+                |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
+                |
+                |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
             val again = scanner.nextLine()
             if (again.uppercase() == "AGAIN") {
                 codi()
@@ -165,19 +180,9 @@ fun codi() {
             if (again.uppercase() == "HELP") {
                 main()
             }
+            if (again.uppercase() == "EXIT") {
+                println("\nFins un altre $pink$bold(~‾▿‾)~$reset")
+            }
         }
     } while (userGuess!=random && intents != 0)
 }
-
-/*
- TODO
-  - Interfaz
-  - Nombre Usuario
-  - Pensar cuando el usuario es retarded
-  - Limpiar
-
-  println("$bgPurple$pink==================$reset")
-                println("$bgPurple$pink||$reset\t  ${historyList[word]} \t$bgPurple$pink||$reset")
-                if (word == historyList.lastIndex) {
-                    println("$bgPurple$pink==================$reset")
- */
