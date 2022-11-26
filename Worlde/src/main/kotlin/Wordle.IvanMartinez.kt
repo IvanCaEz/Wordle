@@ -1,7 +1,6 @@
-/*
-* AUTHOR: Iván Martínez Cañero
-* DATE: 2022/11/06
-* TITLE: Wordle
+/**
+* @author Iván Martínez Cañero
+* @version 1.0 - 2022/11/06
 */
 import java.util.*
 
@@ -120,7 +119,7 @@ fun codi() {
         } while (lletraRepetida || userGuess.length != 5)
 
         var history = ""
-        if (userGuess!=random) {
+        if (userGuess!=random) { //pinta las letras según la condición
             for (lletra in 0..userGuess.lastIndex) {
                 if (userGuess[lletra] !in random) { // No está
                    history +=  (" $box$bgGray ${userGuess[lletra]} $reset ")
