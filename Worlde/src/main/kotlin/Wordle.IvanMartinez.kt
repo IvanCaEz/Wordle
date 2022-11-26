@@ -31,7 +31,7 @@ import java.util.*
  * This function will explain the user the instructions of the game
  * - Will ask the user to type "START" to begin the game
  */
-fun instruccions (){     //INSTRUCCIONS
+fun instruccions (){
     val scanner = Scanner(System.`in`).useLocale(Locale.UK)
     do {
         println("$yellow$bold✩°｡⋆ $purple$bold Benvingut / Benvinguda! $pink(*•ᴗ•*)ノﾞ  $yellow$bold⋆｡°✩$reset  ")
@@ -63,15 +63,27 @@ fun main() {
  * - First will take a random word from the wordPool and will ask the user for a Word
  * - If the word has repeated chars or doesn't have a length of 5 chars it will throw a warning and will ask
  * for a word again.
- * - When the word is accepted and isn't the right guess:
+ *
+ * ### When the word is accepted and isn't the right guess:
+ *
  * - It will scan every char at the userGuess word and compare the position with the same position
  * of the char of the random word and at the same time will be colored based on the position and added
  * to a variable called "history"
  * - Then it will be added to a list called "historyList" and with each iteration will print the content
  * of the list creating the history of the game
+ * - The program will also print the number of the current round.
  * - Last it will rest 1 try
- * - When the word is the right word:
+ *
+ * ### When the word is the right word:
+ *
  * - Will print a congratulation message with the correct word
+ *
+ * ### When the user spends all their tries
+ *
+ * - Will end the programm and the game with a lose.
+ *
+ * ### After the game
+ *
  * - If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
  * read the rules or stop playing.
  */
