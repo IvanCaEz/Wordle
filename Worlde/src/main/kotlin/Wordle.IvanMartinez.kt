@@ -79,7 +79,7 @@ fun main() {
  *
  * ### When the user spends all their tries
  *
- * - Will end the programm and the game with a lose.
+ * - Will end the program and the game with a lose.
  *
  * ### After the game
  *
