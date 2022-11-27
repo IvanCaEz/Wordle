@@ -12,17 +12,28 @@ a colored background on that character. Displaying:
 - A yellow background if the character exists in the word but isn't in the right position.
 - A green background if the character exists and is in the right position.
 
+It had been developed in IntelliJ IDEA with the Kotlin language.
+
 ---
 
-## Install
+## Author
+
+[Ivan Martinez Cañero](https://gitlab.com/ivan.martinez.7e6)
+
+---
+
+## Installing
 
 Use git to clone this repository into your computer.
 
 > git clone https://gitlab.com/ivan.martinez.7e6/wordle
 
+
 ---
 
 ## Running the project
+
+Open the project with IntelliJ IDEA and run the file.
 
 ### Formatting the Output
 
@@ -76,16 +87,38 @@ The ***codi*** function is where the word pool of the game and all the logic of 
 - The program will also print the number of the current round.
 - Last it will rest 1 try and will communicate to the user how many tries has.
 
+![alt text](img/wordleColors.png "Colored characters") 
+
+
 ##### When the word is the right word
 
 Will print a congratulation message and will show the tries used.
 
+![alt text](img/wordleRounds.png "History")
+![alt text](img/wordleWin.png "Win message")
+
 ##### When the user spends all their tries
 
-Will end the programm and the game with a lose.
+Will end the program and the game with a lose.
+
+![alt text](img/wordleRoundsLose.png "History")
+![alt text](img/wordleLose.png "Lose message")
+
 
 #### After the game
 
 If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
 read the rules or stop playing.
+
+![alt text](img/wordleMenu.png "Menu")
+
+
+---
+
+### License
+
+This project is licensed under the [GNU Affero General Public License v3.0](https://choosealicense.com/licenses/agpl-3.0/) 
+
+See the [LICENSE.md](LICENSE) file for details
+
 
