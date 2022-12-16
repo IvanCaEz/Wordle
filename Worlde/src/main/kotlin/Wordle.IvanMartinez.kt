@@ -52,12 +52,69 @@ fun instruccions (){
 
 /**
  * The main fuction will call in order other functions
+ *
+ * Then will ask the user if it wants to play again, read the rules or stop playing.
  */
 fun main() {
     instruccions()
-    codi()
-}
+    var playAgain = false
+    do {
+        val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
+            "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
+            "Tecla","Digne","Força","Apunt")
+        val random = wordPool.random().uppercase()
+        var intents = 6
+        var ronda = 0
+        val historyList: MutableList<String> = mutableListOf()
+        println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
+        println(random) //Treure el comentari per veure la paraula i fer proves
 
+        do {
+            val userGuess = characterChecker()
+            characterPainter(userGuess, random, historyList)
+
+
+
+            intents--
+            ronda++
+
+            if (intents!=0 && userGuess!=random){
+                println("\nEt queden $cyan$bold$box $intents $reset intents\n")
+            }
+
+
+        } while (userGuess!=random && intents != 0)
+        if (ronda==1){
+            println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
+        }
+        else {
+            println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box ${ronda} $reset intents! $yellow$bold⋆｡°✩$reset\n" )
+        }
+
+        playAgain = false
+        if (intents == 0){
+            println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
+        }
+
+        println("""- Si vols tornar a jugar entra $pink$bold$box AGAIN $reset
+                |
+                |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
+                |
+                |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
+        val again = scanner.nextLine()
+        if (again.uppercase() == "AGAIN") {
+            playAgain = true
+        }
+        if (again.uppercase() == "HELP") {
+            main()
+        }
+        if (again.uppercase() == "EXIT") {
+            println("\nFins un altre $pink$bold(~‾▿‾)~$reset")
+        }
+
+
+    } while (playAgain == true)
+}
 
 
 /**
@@ -123,7 +180,7 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  * @param ronda An int which counts the current round
  * @param intents An int which counts the tries
  */
-fun characterPainter(userGuess: String, random: String, historyList: MutableList<String>, ronda: Int, intents:Int) {
+fun characterPainter(userGuess: String, random: String, historyList: MutableList<String>) {
     var history = ""
     if (userGuess != random) { //pinta las letras según la condición
         for (lletra in 0..userGuess.lastIndex) {
@@ -146,74 +203,6 @@ fun characterPainter(userGuess: String, random: String, historyList: MutableList
             }
         }
         terminalPrinter(history, historyList)
-        if (ronda==0){
-            println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
-        }
-        else {
-            println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box ${ronda+1} $reset intents! $yellow$bold⋆｡°✩$reset\n" )
-        }
-        playAgain(intents)
+
     }
-}
-
-
-/**
- * This function will generate a random word from the wordPool list, then it will call
- * other functions to continue with the game.
- */
-fun codi() {
-    val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
-        "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
-        "Tecla","Digne","Força","Apunt")
-    val random = wordPool.random().uppercase()
-    var intents = 6
-    var ronda = 0
-    val historyList: MutableList<String> = mutableListOf()
-    println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
-    println(random) //Treure el comentari per veure la paraula i fer proves
-
-    do {
-        val userGuess = characterChecker()
-        characterPainter(userGuess, random, historyList, ronda, intents)
-
-        intents--
-        ronda++
-
-        if (intents!=0 && userGuess!=random){
-            println("\nEt queden $cyan$bold$box $intents $reset intents\n")
-        }
-        if (intents==0){
-            playAgain(intents)
-        }
-    } while (userGuess!=random && intents != 0)
-}
-
-
-/**
- * This function will ask the user if it wants to play again, read the rules or stop playing.
- *
- * If the tries are 0 it will print a special message.
- *
- * @param intents An int which counts the tries
- */
-
-fun playAgain(intents: Int){
-    if (intents == 0){
-        println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
-    }
-        println("""- Si vols tornar a jugar entra $pink$bold$box AGAIN $reset
-                |
-                |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
-                |
-                |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
-        val again = scanner.nextLine()
-        if (again.uppercase() == "AGAIN") {
-            codi()
-        }
-        if (again.uppercase() == "HELP") {
-            main()
-        }
-        if (again.uppercase() == "EXIT") {
-            println("\nFins un altre $pink$bold(~‾▿‾)~$reset")
-        }
 }
