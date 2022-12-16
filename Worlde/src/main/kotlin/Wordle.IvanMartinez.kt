@@ -1,6 +1,6 @@
 /**
 * @author Iván Martínez Cañero
-* @version 1.0 - 2022/11/06
+* @version 1.2 - 2022/12/16
 */
 import java.util.*
 
@@ -58,41 +58,19 @@ fun main() {
     codi()
 }
 
+
+
 /**
- * The codi function is where the word pool of the game and all the logic of the application lies.
- * - First will take a random word from the wordPool and will ask the user for a Word
- * - If the word has repeated chars or doesn't have a length of 5 chars it will throw a warning and will ask
- * for a word again.
- *
- * ### When the word is accepted and isn't the right guess:
- *
- * - It will scan every char at the userGuess word and compare the position with the same position
- * of the char of the random word and at the same time will be colored based on the position and added
- * to a variable called "history"
- * - Then it will be added to a list called "historyList" and with each iteration will print the content
- * of the list creating the history of the game
- * - The program will also print the number of the current round.
- * - Last it will rest 1 try
- *
- * ### When the word is the right word:
- *
- * - Will print a congratulation message with the correct word
- *
- * ### When the user spends all their tries
- *
- * - Will end the program and the game with a lose.
- *
- * ### After the game
- *
- * - If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
- * read the rules or stop playing.
+ * This function ask the user to guess a word, then checks if the length of the user word has a lenght
+ * of 5 or not. If it has a length of 5 it returns the user word.
  */
 fun characterChecker(): String{
     var userGuess: String
     do {
-        var lletraRepetida = false
         println("Entra la teva paraula")
-         userGuess = scanner.nextLine().uppercase()
+        userGuess = scanner.nextLine().uppercase()
+        /*
+        var lletraRepetida = false
         for (lletra in 0..userGuess.lastIndex){
             for (repetida in lletra+1..userGuess.lastIndex){
                 if (userGuess[lletra] == userGuess[repetida]){
@@ -103,13 +81,20 @@ fun characterChecker(): String{
         if (lletraRepetida){
             println("$underline$red${bold}No$reset pots repetir lletra a la paraula")
         }
+         */
         if (userGuess.length != 5){
             println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
         }
-    } while (lletraRepetida || userGuess.length != 5)
+    } while ( userGuess.length != 5)
     return userGuess
 }
-
+/**
+ * This function adds the painted word to a list, then iterates the list printing each entry
+ *  within the list.
+ *
+ * @param history A string with the user word painted
+ * @param historyList A mutable list with the all the entries of the user
+ */
 fun terminalPrinter(history:String, historyList: MutableList<String>){
     historyList.add(history)
     for (word in 0..historyList.lastIndex){
@@ -118,7 +103,26 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
         println("╚═════════════════════════╝")
     }
 }
-
+/**
+ * This function compares the user word with the random word.
+ *
+ * Will iterate for each character within the word and compare the position of that
+ * character with the same position of the corresponding character at the random word and at the same
+ * time will be colored and added to history.
+ *
+ * Then it will call the function terminalPrinter in order to print the history of the game.
+ *
+ * If the userGuess is the same as the random word, it will do the same of before and will check the ronda
+ * parameter, if the round is 0, will print a special message. And will call the function playAgain
+ * to ask the user if they want to play again.
+ *
+ * @param random A string containig the word from the Word Pool of the game
+ * @param userGuess A string containing the word that the user previosly entered
+ * @param history A string with the user word painted
+ * @param historyList A mutable list with the all the entries of the user
+ * @param ronda An int which counts the current round
+ * @param intents An int which counts the tries
+ */
 fun characterPainter(userGuess: String, random: String, historyList: MutableList<String>, ronda: Int, intents:Int) {
     var history = ""
     if (userGuess != random) { //pinta las letras según la condición
@@ -152,6 +156,11 @@ fun characterPainter(userGuess: String, random: String, historyList: MutableList
     }
 }
 
+
+/**
+ * This function will generate a random word from the wordPool list, then it will call
+ * other functions to continue with the game.
+ */
 fun codi() {
     val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
         "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
@@ -178,6 +187,15 @@ fun codi() {
         }
     } while (userGuess!=random && intents != 0)
 }
+
+
+/**
+ * This function will ask the user if it wants to play again, read the rules or stop playing.
+ *
+ * If the tries are 0 it will print a special message.
+ *
+ * @param intents An int which counts the tries
+ */
 
 fun playAgain(intents: Int){
     if (intents == 0){
