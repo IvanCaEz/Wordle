@@ -1,0 +1,12 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:////PointingToDeclaration/-worlde/[root]/index.html
+$dokka.location:/ColoresKt///PointingToDeclaration/-worlde/[root]/-colores-kt/index.html
+$dokka.location:/ColoresKt/colorines/#/PointingToDeclaration/-worlde/[root]/-colores-kt/colorines.html
+$dokka.location:/WordleKt///PointingToDeclaration/-worlde/[root]/-wordle-kt/index.html
+$dokka.location:/WordleKt/codi/#/PointingToDeclaration/-worlde/[root]/-wordle-kt/codi.html
+$dokka.location:/WordleKt/instruccions/#/PointingToDeclaration/-worlde/[root]/-wordle-kt/instruccions.html
+$dokka.location:/WordleKt/interfaz/#/PointingToDeclaration/-worlde/[root]/-wordle-kt/interfaz.html
+$dokka.location:/WordleKt/main/#/PointingToDeclaration/-worlde/[root]/-wordle-kt/main.html
+
+
