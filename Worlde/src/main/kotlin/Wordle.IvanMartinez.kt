@@ -71,9 +71,8 @@ fun main() {
 
         do {
             val userGuess = characterChecker()
-            characterPainter(userGuess, random, historyList)
 
-
+            terminalPrinter(characterPainter(userGuess, random), historyList)
 
             intents--
             ronda++
@@ -180,36 +179,35 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  * @param ronda An int which counts the current round
  * @param intents An int which counts the tries
  */
-fun characterPainter(userGuess: String, random: String, historyList: MutableList<String>) {
+fun characterPainter(userGuess: String, random: String): String {
     var history = ""
-    var repeatedCharCounter = 0
-    if (userGuess != random) { //pinta las letras según la condición
-        for (lletra in 0..userGuess.lastIndex) {
+    for (lletra in 0..userGuess.lastIndex) {
+        var repeatedCharCounter = false
+        for (lletra2 in lletra+1..userGuess.lastIndex){
+            if (userGuess[lletra] == userGuess[lletra2]){
+                repeatedCharCounter = true
+            }
+        }
+
             if (userGuess[lletra] !in random) { // No está
                 history += (" $box$bgGray ${userGuess[lletra]} $reset ")
             }
             if (userGuess[lletra] == random[lletra]) { // Posición correcta
                 history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
-                repeatedCharCounter++
+            }
 
+            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]) { // Posición incorrecta
+                if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedCharCounter == true){
+                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+                } else{
+                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+
+                }
             }
-            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] && repeatedCharCounter == 0 ) { // Posición incorrecta
-                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-            }
-            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] && repeatedCharCounter != 0){
-                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-            }
+
 
         }
-        terminalPrinter(history, historyList)
-    }
-    if (userGuess==random) {
-        for (lletra in 0..userGuess.lastIndex) {
-            if (userGuess[lletra] == random[lletra]) { // Posición correcta
-                history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
-            }
-        }
-        terminalPrinter(history, historyList)
+    return history
+        //terminalPrinter(history, historyList)
 
-    }
 }

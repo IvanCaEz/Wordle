@@ -6,5 +6,8 @@ internal class Wordle_IvanMartinezKtTest{
     fun characterCheckerChecksIfUserGuessHas5Chars(){
         assertEquals("Cotxe","Cotxe" )
     }
+    @Test
+    fun characterPainterPaintsAllGreenWhenTheUserGuessIsCorrectWord(){
+    }
 
 }
