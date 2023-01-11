@@ -9,7 +9,7 @@
         <option name="gradleJvm" value="corretto-17" />
         <option name="modules">
           <set>
-            <option value="/dades/IVAN-MARTINEZ/M3/Worlde/Worlde" />
+            <option value="$PROJECT_DIR$/Worlde" />
           </set>
         </option>
       </GradleProjectSettings>

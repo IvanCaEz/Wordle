@@ -38,7 +38,7 @@ fun instruccions (){
         println("A continuació t'explicaré les ${underline}instruccions:$reset  ")
         println("- Tens $underline${bold}6 intents$reset per endevinar la paraula generada")
         println("- Les paraules tenen $underline${bold}5$reset lletres")
-        println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
+       // println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
         println("""- Si el fons de la lletra introduida es possa ${gray}gris$reset vol dir que no existeix a la paraula
         |- Si es possa ${yellow}groc$reset vol dir que existeix però no està a la posició correcta                                                                               ║
         |- Si es possa ${green}verd$reset vol dir que està a la posició correcta
@@ -53,6 +53,9 @@ fun instruccions (){
 /**
  * The main fuction will call in order other functions
  *
+ * Will print messages
+ * If the user guesses the word at first round,will print a special message.
+ *
  * Then will ask the user if it wants to play again, read the rules or stop playing.
  */
 fun main() {
@@ -61,17 +64,17 @@ fun main() {
     do {
         val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
             "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
-            "Tecla","Digne","Força","Apunt")
-        val random = wordPool.random().uppercase()
+            "Tecla","Digne","Força","Apunt", "Color", "Arbre")
+        val random = "ABRIR"
         var intents = 6
         var ronda = 0
         val historyList: MutableList<String> = mutableListOf()
         println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
         println(random) //Treure el comentari per veure la paraula i fer proves
+        var userGuess: String
 
         do {
-            val userGuess = characterChecker()
-
+             userGuess = characterChecker()
             terminalPrinter(characterPainter(userGuess, random), historyList)
 
             intents--
@@ -83,15 +86,15 @@ fun main() {
 
 
         } while (userGuess!=random && intents != 0)
-        if (ronda==1){
+
+        if (userGuess == random && ronda==1){
             println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
         }
-        else {
+        if (userGuess == random)  {
             println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box ${ronda} $reset intents! $yellow$bold⋆｡°✩$reset\n" )
         }
 
-        playAgain = false
-        if (intents == 0){
+        if ( intents == 0 && userGuess != random){
             println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
         }
 
@@ -100,6 +103,8 @@ fun main() {
                 |- Si vols deixar de jugar entra $red$bold$box EXIT $reset
                 |
                 |- Si vols revisar les instruccions entra $blue$bold$box HELP $reset""".trimMargin())
+
+        playAgain = false
         val again = scanner.nextLine()
         if (again.uppercase() == "AGAIN") {
             playAgain = true
@@ -168,9 +173,6 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  *
  * Then it will call the function terminalPrinter in order to print the history of the game.
  *
- * If the userGuess is the same as the random word, it will do the same of before and will check the ronda
- * parameter, if the round is 0, will print a special message. And will call the function playAgain
- * to ask the user if they want to play again.
  *
  * @param random A string containig the word from the Word Pool of the game
  * @param userGuess A string containing the word that the user previosly entered
@@ -181,33 +183,109 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  */
 fun characterPainter(userGuess: String, random: String): String {
     var history = ""
+    var charCheckList = mutableListOf<Char>()
+    var counter = 0
+
     for (lletra in 0..userGuess.lastIndex) {
-        var repeatedCharCounter = false
+        var repeatedChar = false
         for (lletra2 in lletra+1..userGuess.lastIndex){
             if (userGuess[lletra] == userGuess[lletra2]){
-                repeatedCharCounter = true
+                repeatedChar = true
+                counter++
+            }
+        }
+        if (userGuess[lletra] !in random) { // No está
+            history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+        }
+        if (userGuess[lletra] == random[lletra]) { // Posición correcta
+            history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
+            charCheckList.add(userGuess[lletra])
+        }
+        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
+            if (userGuess[lletra] in charCheckList || repeatedChar){
+                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+
+            } else{
+                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
             }
         }
 
-            if (userGuess[lletra] !in random) { // No está
+
+    }
+
+
+    /*
+
+for (lletra2 in lletra+1..userGuess.lastIndex){
+            if (userGuess[lletra] == userGuess[lletra2]){
+                repeatedChar = true
+                counter++
+            }
+        }
+        if (userGuess[lletra] !in random) { // No está
+            history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+        }
+        if (userGuess[lletra] == random[lletra]) { // Posición correcta
+            history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
+            charCheckList.add(userGuess[lletra])
+        }
+        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
+            if (userGuess[lletra] in charCheckList || repeatedChar){
+                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+
+            } else{
                 history += (" $box$bgGray ${userGuess[lletra]} $reset ")
             }
-            if (userGuess[lletra] == random[lletra]) { // Posición correcta
-                history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
-            }
+        }
+----
 
-            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]) { // Posición incorrecta
-                if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedCharCounter == true){
-                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-                } else{
+    var repeatedChar = false
+        for (lletra2 in lletra+1..userGuess.lastIndex){
+            if (userGuess[lletra] == userGuess[lletra2]){
+                repeatedChar = true
+            }
+        }
+
+if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] ){
+                if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar){
                     history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+                } else{
+                    counter--
+                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
 
                 }
             }
 
+    if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar == true){
+                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+                } else{
+                    counter--
+                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
 
+                }
+
+    if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] &&
+                " $box$bgGreen ${userGuess[lletra]} $reset " in history) { // Posición incorrecta
+                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+            }
+
+    if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar == true){
+                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+                } else{
+                    counter--
+                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+
+                }
+
+    || repeatedCharCounter == true
+    for (lletraColor in 0..charCheckList.lastIndex){
+        for (lletraColorNext in lletraColor+1 .. charCheckList.lastIndex){
+            if (charCheckList[lletraColor] == charCheckList[lletraColorNext]){
+                charCheckList[lletraColorNext]
+            }
         }
+    }
+     */
     return history
-        //terminalPrinter(history, historyList)
 
 }
