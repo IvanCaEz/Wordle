@@ -182,6 +182,7 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  */
 fun characterPainter(userGuess: String, random: String, historyList: MutableList<String>) {
     var history = ""
+    var repeatedCharCounter = 0
     if (userGuess != random) { //pinta las letras según la condición
         for (lletra in 0..userGuess.lastIndex) {
             if (userGuess[lletra] !in random) { // No está
@@ -189,10 +190,16 @@ fun characterPainter(userGuess: String, random: String, historyList: MutableList
             }
             if (userGuess[lletra] == random[lletra]) { // Posición correcta
                 history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
+                repeatedCharCounter++
+
             }
-            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]) { // Posición incorrecta
+            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] && repeatedCharCounter == 0 ) { // Posición incorrecta
                 history += (" $box$bgGold ${userGuess[lletra]} $reset ")
             }
+            if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] && repeatedCharCounter != 0){
+                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+            }
+
         }
         terminalPrinter(history, historyList)
     }
