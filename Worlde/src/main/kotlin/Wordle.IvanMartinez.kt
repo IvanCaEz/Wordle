@@ -181,6 +181,29 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  * @param ronda An int which counts the current round
  * @param intents An int which counts the tries
  */
+fun randomWordLetterCounter(random: String, currentLetter: Char): Int {
+    var counter = 0
+    for (i in 0..random.lastIndex) {
+       // for (j in 0..random.lastIndex) {
+            if (random[i] == currentLetter) {
+                counter++
+            }
+      //  }
+    }
+    return counter
+}
+
+fun userGuessLetterCounter(userGuess: String, currentLetter: Char, lletraPosition: Int): Int {
+    var counter = 0
+    for (i in lletraPosition..userGuess.lastIndex) {
+        //for (j in 0..userGuess.lastIndex) {
+            if (userGuess[i] == currentLetter) {
+                counter++
+            }
+     //   }
+    }
+    return counter
+}
 fun characterPainter(userGuess: String, random: String): String {
     var history = ""
     var charCheckList = mutableListOf<Char>()
@@ -188,12 +211,8 @@ fun characterPainter(userGuess: String, random: String): String {
 
     for (lletra in 0..userGuess.lastIndex) {
         var repeatedChar = false
-        for (lletra2 in lletra+1..userGuess.lastIndex){
-            if (userGuess[lletra] == userGuess[lletra2]){
-                repeatedChar = true
-                counter++
-            }
-        }
+
+
         if (userGuess[lletra] !in random) { // No está
             history += (" $box$bgGray ${userGuess[lletra]} $reset ")
         }
@@ -202,6 +221,14 @@ fun characterPainter(userGuess: String, random: String): String {
             charCheckList.add(userGuess[lletra])
         }
         if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
+            if (userGuessLetterCounter(userGuess, userGuess[lletra], lletra ) <= randomWordLetterCounter(random, userGuess[lletra]) ){
+                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
+            } else {
+                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+            }
+        }
+        /*
+        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
             if (userGuess[lletra] in charCheckList || repeatedChar){
                 history += (" $box$bgGold ${userGuess[lletra]} $reset ")
 
@@ -209,12 +236,16 @@ fun characterPainter(userGuess: String, random: String): String {
                 history += (" $box$bgGray ${userGuess[lletra]} $reset ")
             }
         }
+         */
+
 
 
     }
 
 
     /*
+
+
 
 for (lletra2 in lletra+1..userGuess.lastIndex){
             if (userGuess[lletra] == userGuess[lletra2]){
