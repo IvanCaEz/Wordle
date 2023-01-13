@@ -1,31 +1,32 @@
 /**
-* @author Iván Martínez Cañero
-* @version 1.2 - 2022/12/16
-*/
+ * @author Iván Martínez Cañero
+ * @version 1.2 - 2022/12/16
+ */
 import java.util.*
+import javax.print.DocFlavor.CHAR_ARRAY
 
 /**
  * These constants are used to color the foreground and background of each character when needed
  * Write the name or names of the constants you want to use before the next word or character and then
  * use the constant "reset" after the desired word or character to end the formatting
  */
- const val reset = "\u001b[0m"
- const val box = "\u001b[51m"
- const val bold = "\u001b[1m"
- const val underline = "\u001b[21m"
- const val bgGold = "\u001b[43m"
- const val bgGreen = "\u001b[48;5;28m"
- const val bgGray = "\u001b[47m"
- const val red = "\u001b[31m"
- const val cyan = "\u001b[38;5;87m"
- const val green = "\u001b[38;5;10m"
- const val gold = "\u001b[33m"
- const val yellow = "\u001b[38;5;11m"
- const val gray = "\u001b[38;5;7m"
- const val pink = "\u001b[38;5;207m"
- const val purple = "\u001b[38;5;99m"
- const val blue = "\u001b[38;5;69m"
- val scanner = Scanner(System.`in`).useLocale(Locale.UK)
+const val reset = "\u001b[0m"
+const val box = "\u001b[51m"
+const val bold = "\u001b[1m"
+const val underline = "\u001b[21m"
+const val bgGold = "\u001b[43m"
+const val bgGreen = "\u001b[48;5;28m"
+const val bgGray = "\u001b[47m"
+const val red = "\u001b[31m"
+const val cyan = "\u001b[38;5;87m"
+const val green = "\u001b[38;5;10m"
+const val gold = "\u001b[33m"
+const val yellow = "\u001b[38;5;11m"
+const val gray = "\u001b[38;5;7m"
+const val pink = "\u001b[38;5;207m"
+const val purple = "\u001b[38;5;99m"
+const val blue = "\u001b[38;5;69m"
+val scanner = Scanner(System.`in`).useLocale(Locale.UK)
 
 
 /**
@@ -38,7 +39,7 @@ fun instruccions (){
         println("A continuació t'explicaré les ${underline}instruccions:$reset  ")
         println("- Tens $underline${bold}6 intents$reset per endevinar la paraula generada")
         println("- Les paraules tenen $underline${bold}5$reset lletres")
-       // println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
+        // println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
         println("""- Si el fons de la lletra introduida es possa ${gray}gris$reset vol dir que no existeix a la paraula
         |- Si es possa ${yellow}groc$reset vol dir que existeix però no està a la posició correcta                                                                               ║
         |- Si es possa ${green}verd$reset vol dir que està a la posició correcta
@@ -71,10 +72,20 @@ fun main() {
         val historyList: MutableList<String> = mutableListOf()
         println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
         println(random) //Treure el comentari per veure la paraula i fer proves
+
         var userGuess: String
 
+
         do {
-             userGuess = characterChecker()
+            do {
+                println("Entra la teva paraula")
+                userGuess = scanner.nextLine().uppercase()
+                if (!characterChecker(userGuess)){
+                    println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
+                }
+
+            } while (!characterChecker(userGuess))
+
             terminalPrinter(characterPainter(userGuess, random), historyList)
 
             intents--
@@ -125,29 +136,17 @@ fun main() {
  * This function ask the user to guess a word, then checks if the length of the user word has a lenght
  * of 5 or not. If it has a length of 5 it returns the user word.
  */
-fun characterChecker(): String{
-    var userGuess: String
-    do {
-        println("Entra la teva paraula")
-        userGuess = scanner.nextLine().uppercase()
-        /*
-        var lletraRepetida = false
-        for (lletra in 0..userGuess.lastIndex){
-            for (repetida in lletra+1..userGuess.lastIndex){
-                if (userGuess[lletra] == userGuess[repetida]){
-                    lletraRepetida = true
-                }
-            }
+fun characterChecker(userGuess: String): Boolean{
+    return userGuess.length == 5
+}
+
+fun isLetters(userGuess: String): Boolean {
+    for (i in 0..userGuess.lastIndex){
+        if (userGuess[i] !in 'a'.. 'z'){
+            return false
         }
-        if (lletraRepetida){
-            println("$underline$red${bold}No$reset pots repetir lletra a la paraula")
-        }
-         */
-        if (userGuess.length != 5){
-            println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
-        }
-    } while ( userGuess.length != 5)
-    return userGuess
+    }
+    return true
 }
 /**
  * This function adds the painted word to a list, then iterates the list printing each entry
@@ -156,8 +155,12 @@ fun characterChecker(): String{
  * @param history A string with the user word painted
  * @param historyList A mutable list with the all the entries of the user
  */
-fun terminalPrinter(history:String, historyList: MutableList<String>){
-    historyList.add(history)
+fun terminalPrinter(formatedHistory: String, historyList: MutableList<String>){
+    var word = ""
+    for (i in formatedHistory){
+        word += i
+    }
+    historyList.add(word)
     for (word in 0..historyList.lastIndex){
         println("╔═════════════════════$cyan$bold$box ${6-word} $reset═╗")
         println("║${historyList[word]}║")
@@ -176,147 +179,47 @@ fun terminalPrinter(history:String, historyList: MutableList<String>){
  *
  * @param random A string containig the word from the Word Pool of the game
  * @param userGuess A string containing the word that the user previosly entered
- * @param history A string with the user word painted
- * @param historyList A mutable list with the all the entries of the user
- * @param ronda An int which counts the current round
- * @param intents An int which counts the tries
+ * @param history A MutableList
+ * @param formatedHistory A string with the user word painted
  */
-fun randomWordLetterCounter(random: String, currentLetter: Char): Int {
-    var counter = 0
-    for (i in 0..random.lastIndex) {
-       // for (j in 0..random.lastIndex) {
-            if (random[i] == currentLetter) {
-                counter++
-            }
-      //  }
-    }
-    return counter
-}
-
-fun userGuessLetterCounter(userGuess: String, currentLetter: Char, lletraPosition: Int): Int {
-    var counter = 0
-    for (i in lletraPosition..userGuess.lastIndex) {
-        //for (j in 0..userGuess.lastIndex) {
-            if (userGuess[i] == currentLetter) {
-                counter++
-            }
-     //   }
-    }
-    return counter
-}
 fun characterPainter(userGuess: String, random: String): String {
-    var history = ""
-    var charCheckList = mutableListOf<Char>()
-    var counter = 0
-
+    val history = MutableList(5){""}
+    var formatedHistory = ""
+    val charCheckList = mutableListOf<Char>()
     for (lletra in 0..userGuess.lastIndex) {
-        var repeatedChar = false
 
-
-        if (userGuess[lletra] !in random) { // No está
-            history += (" $box$bgGray ${userGuess[lletra]} $reset ")
+        // Posición correcta
+        if (userGuess[lletra] == random[lletra]) {
+            history[lletra] = (" $box$bgGreen ${userGuess[lletra]} $reset ")
         }
-        if (userGuess[lletra] == random[lletra]) { // Posición correcta
-            history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
-            charCheckList.add(userGuess[lletra])
-        }
-        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
-            if (userGuessLetterCounter(userGuess, userGuess[lletra], lletra ) <= randomWordLetterCounter(random, userGuess[lletra]) ){
-                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-            } else {
-                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-            }
-        }
-        /*
-        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
-            if (userGuess[lletra] in charCheckList || repeatedChar){
-                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-
-            } else{
-                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-            }
-        }
-         */
-
-
-
-    }
-
-
-    /*
-
-
-
-for (lletra2 in lletra+1..userGuess.lastIndex){
-            if (userGuess[lletra] == userGuess[lletra2]){
-                repeatedChar = true
-                counter++
-            }
-        }
-        if (userGuess[lletra] !in random) { // No está
-            history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-        }
-        if (userGuess[lletra] == random[lletra]) { // Posición correcta
-            history += (" $box$bgGreen ${userGuess[lletra]} $reset ")
-            charCheckList.add(userGuess[lletra])
-        }
-        if (userGuess[lletra] in random && userGuess[lletra] != random[lletra]){
-            if (userGuess[lletra] in charCheckList || repeatedChar){
-                history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-
-            } else{
-                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-            }
-        }
-----
-
-    var repeatedChar = false
-        for (lletra2 in lletra+1..userGuess.lastIndex){
-            if (userGuess[lletra] == userGuess[lletra2]){
-                repeatedChar = true
-            }
-        }
-
-if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] ){
-                if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar){
-                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-                } else{
-                    counter--
-                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-
-                }
-            }
-
-    if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar == true){
-                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-                } else{
-                    counter--
-                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-
-                }
-
-    if (userGuess[lletra] in random && userGuess[lletra] != random[lletra] &&
-                " $box$bgGreen ${userGuess[lletra]} $reset " in history) { // Posición incorrecta
-                history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-            }
-
-    if (" $box$bgGreen ${userGuess[lletra]} $reset " in history || repeatedChar == true){
-                    history += (" $box$bgGray ${userGuess[lletra]} $reset ")
-                } else{
-                    counter--
-                    history += (" $box$bgGold ${userGuess[lletra]} $reset ")
-
-                }
-
-    || repeatedCharCounter == true
-    for (lletraColor in 0..charCheckList.lastIndex){
-        for (lletraColorNext in lletraColor+1 .. charCheckList.lastIndex){
-            if (charCheckList[lletraColor] == charCheckList[lletraColorNext]){
-                charCheckList[lletraColorNext]
-            }
+        else {
+            charCheckList.add(random[lletra])
         }
     }
-     */
-    return history
+    for (lletra in 0..userGuess.lastIndex){
+        // Posición correcta
+        if (userGuess[lletra] == random[lletra]) {
+            history[lletra] = (" $box$bgGreen ${userGuess[lletra]} $reset ")
+        }
+        // Posición incorrecta
+        if (userGuess[lletra] in charCheckList && history[lletra] == ""){
+            history[lletra] = (" $box$bgGold ${userGuess[lletra]} $reset ")
+            for (i in 0..charCheckList.lastIndex){
+                if (charCheckList[i] == userGuess[lletra]) {
+                    charCheckList.removeAt(i)
+                    break
+                }
+            }
+        }
+        // No está
+        if (userGuess[lletra] !in charCheckList && history[lletra] == "") {
+            history[lletra] = (" $box$bgGray ${userGuess[lletra]} $reset ")
+        }
+
+    }
+    for (lletra in 0..history.lastIndex){
+        formatedHistory += history[lletra]
+    }
+    return formatedHistory
 
 }
