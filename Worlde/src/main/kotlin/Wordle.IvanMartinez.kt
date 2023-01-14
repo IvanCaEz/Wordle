@@ -1,9 +1,8 @@
 /**
  * @author Iván Martínez Cañero
- * @version 1.2 - 2022/12/16
+ * @version 1.3 - 2023/01/14
  */
 import java.util.*
-import javax.print.DocFlavor.CHAR_ARRAY
 
 /**
  * These constants are used to color the foreground and background of each character when needed
@@ -26,7 +25,7 @@ const val gray = "\u001b[38;5;7m"
 const val pink = "\u001b[38;5;207m"
 const val purple = "\u001b[38;5;99m"
 const val blue = "\u001b[38;5;69m"
-val scanner = Scanner(System.`in`).useLocale(Locale.UK)
+val scanner: Scanner = Scanner(System.`in`).useLocale(Locale.UK)
 
 
 /**
@@ -39,7 +38,6 @@ fun instruccions (){
         println("A continuació t'explicaré les ${underline}instruccions:$reset  ")
         println("- Tens $underline${bold}6 intents$reset per endevinar la paraula generada")
         println("- Les paraules tenen $underline${bold}5$reset lletres")
-        // println("- La paraula generada $underline${bold}no$reset repeteix lletres ")
         println("""- Si el fons de la lletra introduida es possa ${gray}gris$reset vol dir que no existeix a la paraula
         |- Si es possa ${yellow}groc$reset vol dir que existeix però no està a la posició correcta                                                                               ║
         |- Si es possa ${green}verd$reset vol dir que està a la posició correcta
@@ -61,20 +59,18 @@ fun instruccions (){
  */
 fun main() {
     instruccions()
-    var playAgain = false
+    var playAgain: Boolean
     do {
         val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
             "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
-            "Tecla","Digne","Força","Apunt", "Color", "Arbre")
-        val random = "ABRIR"
+            "Tecla","Digne","Deure","Apunt","Color","Arbre","Solar","Cursa","Repte","Bomba")
+        val random =  wordPool.random().uppercase()
         var intents = 6
         var ronda = 0
         val historyList: MutableList<String> = mutableListOf()
         println("Bona sort! $bold$cyan(｡•̀ᴗ-)$yellow⋆✧ $reset")
-        println(random) //Treure el comentari per veure la paraula i fer proves
 
         var userGuess: String
-
 
         do {
             do {
@@ -98,13 +94,13 @@ fun main() {
 
         } while (userGuess!=random && intents != 0)
 
-        if (userGuess == random && ronda==1){
-            println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
+        if (userGuess == random ){
+            if (ronda==1){
+                println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
+            } else {
+                println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box $ronda $reset intents! $yellow$bold⋆｡°✩$reset\n" )
+            }
         }
-        if (userGuess == random)  {
-            println ("\n$yellow$bold✩°｡⋆$reset Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box ${ronda} $reset intents! $yellow$bold⋆｡°✩$reset\n" )
-        }
-
         if ( intents == 0 && userGuess != random){
             println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
         }
@@ -127,40 +123,42 @@ fun main() {
             println("\nFins un altre $pink$bold(~‾▿‾)~$reset")
         }
 
-
-    } while (playAgain == true)
+    } while (playAgain)
 }
 
 
 /**
- * This function ask the user to guess a word, then checks if the length of the user word has a lenght
- * of 5 or not. If it has a length of 5 it returns the user word.
+ * This function will check if the length of the guessed word the user enters has 5 characters, if true,
+ * will check if all characters are alphabetical and will throw false if there's a non-alphabetical character or
+ * the length is not 5.
+ *
+ * @param userGuess A string containing the word that the user previosly entered
+ * @param userGuess
  */
-fun characterChecker(userGuess: String): Boolean{
-    return userGuess.length == 5
+fun characterChecker(userGuess: String): Boolean {
+    if (userGuess.length == 5){
+        for (char in userGuess)
+        {
+            if (char !in 'A'..'Z' && char !in 'a'..'z') {
+                return false
+            }
+        }
+        return true
+    }
+    else return false
 }
 
-fun isLetters(userGuess: String): Boolean {
-    for (i in 0..userGuess.lastIndex){
-        if (userGuess[i] !in 'a'.. 'z'){
-            return false
-        }
-    }
-    return true
-}
 /**
  * This function adds the painted word to a list, then iterates the list printing each entry
- *  within the list.
+ *  within the list with, in my opinion, a cool touch.
+ *  Also, will indicate the number of the round for that intent.
  *
- * @param history A string with the user word painted
- * @param historyList A mutable list with the all the entries of the user
+ * @param formatedHistory A string with the user word painted
+ * @param historyList A mutable list with all the entries of the user
  */
 fun terminalPrinter(formatedHistory: String, historyList: MutableList<String>){
-    var word = ""
-    for (i in formatedHistory){
-        word += i
-    }
-    historyList.add(word)
+
+    historyList.add(formatedHistory)
     for (word in 0..historyList.lastIndex){
         println("╔═════════════════════$cyan$bold$box ${6-word} $reset═╗")
         println("║${historyList[word]}║")
@@ -171,16 +169,24 @@ fun terminalPrinter(formatedHistory: String, historyList: MutableList<String>){
  * This function compares the user word with the random word.
  *
  * Will iterate for each character within the word and compare the position of that
- * character with the same position of the corresponding character at the random word and at the same
- * time will be colored and added to history.
+ * character with the same position of the corresponding character at the random word.
  *
- * Then it will call the function terminalPrinter in order to print the history of the game.
+ * If the character is in the correct position will paint that character green and add it
+ * at the correct position in an empty list we created with a size of 5, else will add the character of
+ * the random word at the current iteration to a list.
+ *
+ * Then will iterate again the guessed word and will check if each character is in the list of chars that was
+ * created on the previous for loop, if it will paint it yellow,then will iterate the list of chars and remove
+ * that letter.
+ *
+ * And if it isn't present in the list, will paint it gray.
+ *
+ * Finally, will iterate the mutable list of painted words in order to create and return a string with the guessed
+ * word painted.
  *
  *
  * @param random A string containig the word from the Word Pool of the game
  * @param userGuess A string containing the word that the user previosly entered
- * @param history A MutableList
- * @param formatedHistory A string with the user word painted
  */
 fun characterPainter(userGuess: String, random: String): String {
     val history = MutableList(5){""}
@@ -197,12 +203,8 @@ fun characterPainter(userGuess: String, random: String): String {
         }
     }
     for (lletra in 0..userGuess.lastIndex){
-        // Posición correcta
-        if (userGuess[lletra] == random[lletra]) {
-            history[lletra] = (" $box$bgGreen ${userGuess[lletra]} $reset ")
-        }
         // Posición incorrecta
-        if (userGuess[lletra] in charCheckList && history[lletra] == ""){
+        if (userGuess[lletra] in charCheckList && history[lletra] == "" ){
             history[lletra] = (" $box$bgGold ${userGuess[lletra]} $reset ")
             for (i in 0..charCheckList.lastIndex){
                 if (charCheckList[i] == userGuess[lletra]) {
@@ -212,7 +214,7 @@ fun characterPainter(userGuess: String, random: String): String {
             }
         }
         // No está
-        if (userGuess[lletra] !in charCheckList && history[lletra] == "") {
+        if (userGuess[lletra] !in charCheckList && history[lletra] == "" ) {
             history[lletra] = (" $box$bgGray ${userGuess[lletra]} $reset ")
         }
 
