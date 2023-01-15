@@ -52,7 +52,6 @@ fun instruccions (){
 /**
  * The main fuction will call in order other functions
  *
- * Will print messages
  * If the user guesses the word at first round,will print a special message.
  *
  * Then will ask the user if it wants to play again, read the rules or stop playing.
@@ -61,9 +60,9 @@ fun main() {
     instruccions()
     var playAgain: Boolean
     do {
-        val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor",
-            "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima",
-            "Tecla","Digne","Deure","Apunt","Color","Arbre","Solar","Cursa","Repte","Bomba")
+        val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor","Cavar",
+            "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima","Terra","Amiga",
+            "Tecla","Digne","Deure","Apunt","Color","Arbre","Solar","Cursa","Repte","Bomba","Barba")
         val random =  wordPool.random().uppercase()
         var intents = 6
         var ronda = 0
@@ -133,7 +132,7 @@ fun main() {
  * the length is not 5.
  *
  * @param userGuess A string containing the word that the user previosly entered
- * @param userGuess
+ * @return A boolean
  */
 fun characterChecker(userGuess: String): Boolean {
     if (userGuess.length == 5){
@@ -176,7 +175,7 @@ fun terminalPrinter(formatedHistory: String, historyList: MutableList<String>){
  * the random word at the current iteration to a list.
  *
  * Then will iterate again the guessed word and will check if each character is in the list of chars that was
- * created on the previous for loop, if it will paint it yellow,then will iterate the list of chars and remove
+ * created on the previous for loop, if it is, will paint it yellow and then will iterate the list of chars and remove
  * that letter.
  *
  * And if it isn't present in the list, will paint it gray.
@@ -187,6 +186,8 @@ fun terminalPrinter(formatedHistory: String, historyList: MutableList<String>){
  *
  * @param random A string containig the word from the Word Pool of the game
  * @param userGuess A string containing the word that the user previosly entered
+ *
+ * @return A string with the word the user has entered with each character colored
  */
 fun characterPainter(userGuess: String, random: String): String {
     val history = MutableList(5){""}
