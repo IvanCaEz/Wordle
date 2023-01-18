@@ -2,7 +2,9 @@
  * @author Iván Martínez Cañero
  * @version 1.3 - 2023/01/14
  */
+import java.io.File
 import java.util.*
+import javax.swing.WindowConstants
 
 /**
  * These constants are used to color the foreground and background of each character when needed
@@ -49,6 +51,26 @@ fun instruccions (){
     } while (start != "START")
 }
 
+fun askUserName(): String{
+    println("Entra el teu nom d'usuari")
+    val userName = scanner.nextLine()
+    return  userName
+}
+
+fun fileMaker( userName: String, winOrLose: Boolean, random: String, intents: Int){
+    val fileName = "Historial.txt"
+    val file = File("Worlde/src/main/kotlin/Archivos/$fileName")
+
+    val fileAlreadyExists: Boolean = file.createNewFile() // True si no existe, False si existe
+
+    val result = if (winOrLose){
+        "Win"
+    } else {
+        "Lose"
+    }
+    file.appendText("$userName,$random,$winOrLose,$intents\n")
+}
+
 /**
  * The main fuction will call in order other functions
  *
@@ -57,13 +79,27 @@ fun instruccions (){
  * Then will ask the user if it wants to play again, read the rules or stop playing.
  */
 fun main() {
+    var userName: String
+    do {
+
+        println("Entra el teu nom d'usuari")
+        userName = scanner.nextLine()
+
+    } while (!wordChecker(userName, instruction = "name"))
+
     instruccions()
+
     var playAgain: Boolean
     do {
+        val random = File("Worlde/src/main/kotlin/Archivos/WordPool").readLines().random().uppercase()
+
+        /*
         val wordPool = arrayOf("Crema","Dutxa","Caqui","Estoc","Fideu","Calor","Cavar",
             "Astre","Bruna","Bufet","Porta","Movil","Cotxe","Fluid","Abril","Corda","Clima","Terra","Amiga",
             "Tecla","Digne","Deure","Apunt","Color","Arbre","Solar","Cursa","Repte","Bomba","Barba")
         val random =  wordPool.random().uppercase()
+         */
+
         var intents = 6
         var ronda = 0
         val historyList: MutableList<String> = mutableListOf()
@@ -75,11 +111,11 @@ fun main() {
             do {
                 println("Entra la teva paraula")
                 userGuess = scanner.nextLine().uppercase()
-                if (!characterChecker(userGuess)){
+                if (!wordChecker(userGuess, instruction = "word")){
                     println("La paraula ha de tenir $underline$yellow${bold}5$reset lletres")
                 }
 
-            } while (!characterChecker(userGuess))
+            } while (!wordChecker(userGuess, instruction = "word"))
 
             terminalPrinter(characterPainter(userGuess, random), historyList)
 
@@ -92,8 +128,9 @@ fun main() {
 
 
         } while (userGuess!=random && intents != 0)
-
+        var winOrLose = true
         if (userGuess == random ){
+            winOrLose = true
             if (ronda==1){
                 println ("\n$yellow$bold✩°｡⋆$reset Increíble! Has encertat la paraula $green$bold$box $random $reset en $gold$bold$box 1 $reset intent! $yellow$bold⋆｡°✩$reset\n" )
             } else {
@@ -101,7 +138,16 @@ fun main() {
             }
         }
         if ( intents == 0 && userGuess != random){
+            winOrLose = false
             println("\n$cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset Ja no et queden intents $cyan$bold ･ﾟ･(｡>ω<｡)･ﾟ･ $reset\n")
+        }
+
+        println("- Si vols guardar la partida entra $pink$bold$box SAVE $reset\n")
+
+        val saveToHistory = scanner.nextLine()
+
+        if (saveToHistory.uppercase() == "SAVE") {
+            fileMaker(userName, winOrLose, random, ronda)
         }
 
         println("""- Si vols tornar a jugar entra $pink$bold$box AGAIN $reset
@@ -112,6 +158,7 @@ fun main() {
 
         playAgain = false
         val again = scanner.nextLine()
+
         if (again.uppercase() == "AGAIN") {
             playAgain = true
         }
@@ -125,7 +172,6 @@ fun main() {
     } while (playAgain)
 }
 
-
 /**
  * This function will check if the length of the guessed word the user enters has 5 characters, if true,
  * will check if all characters are alphabetical and will throw false if there's a non-alphabetical character or
@@ -134,18 +180,31 @@ fun main() {
  * @param userGuess A string containing the word that the user previosly entered
  * @return A boolean
  */
-fun characterChecker(userGuess: String): Boolean {
-    if (userGuess.length == 5){
-        for (char in userGuess)
-        {
-            if (char !in 'A'..'Z' && char !in 'a'..'z') {
+fun wordChecker(wordToCheck: String, instruction: String):Boolean{
+    if (instruction == "name"){
+        for (char in wordToCheck) {
+            if (char.code in 58..64 || char.code in 91..96 || char.code in 123..126 || char.code in 33..47 ) {
                 return false
             }
         }
         return true
     }
-    else return false
+    if (instruction == "word"){
+        if (wordToCheck.length == 5){
+            for (char in wordToCheck) {
+                if (char !in 'A'..'Z' && char !in 'a'..'z') {
+                    return false
+                }
+            }
+            return true
+        }
+        else return false
+    }
+    return false
 }
+
+
+
 
 /**
  * This function adds the painted word to a list, then iterates the list printing each entry
