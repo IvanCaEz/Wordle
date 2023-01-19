@@ -21,19 +21,19 @@ internal class Wordle_IvanMartinezKtTest{
     }
     // CharacterChecker
     @Test
-    fun characterCheckerReturnsFalseWhenGuessedWordHasMoreThan5Letters(){
-        assertFalse(characterChecker("Colinabo"))
+    fun wordCheckerReturnsFalseWhenGuessedWordHasMoreThan5Letters(){
+        assertFalse(wordChecker("Colinabo", "word"))
     }
     @Test
-    fun characterCheckerReturnsFalseWhenGuessedWordHasNoAlphabetical(){
-        assertFalse(characterChecker("12345"))
+    fun wordCheckerReturnsFalseWhenGuessedWordHasNoAlphabetical(){
+        assertFalse(wordChecker("12345", "word"))
     }
     @Test
-    fun characterCheckerReturnsFalseWhenGuessedWordHasALengthOf5ButACharIsNotAlphabetical(){
-        assertFalse(characterChecker("Hol2a"))
+    fun wordCheckerReturnsFalseWhenGuessedWordHasALengthOf5ButACharIsNotAlphabetical(){
+        assertFalse(wordChecker("Hol2a", "word"))
     }
     @Test
-    fun characterCheckerReturnsTrueWhenThe5CharsAreAlphabetical(){
-        assertTrue(characterChecker("CALOR"))
+    fun wordCheckerReturnsTrueWhenThe5CharsAreAlphabeticalOnTheUserGuessWord(){
+        assertTrue(wordChecker("CALOR", "word"))
     }
 }
