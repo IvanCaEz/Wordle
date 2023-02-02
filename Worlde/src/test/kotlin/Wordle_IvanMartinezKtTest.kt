@@ -36,4 +36,12 @@ internal class Wordle_IvanMartinezKtTest{
     fun wordCheckerReturnsTrueWhenThe5CharsAreAlphabeticalOnTheUserGuessWord(){
         assertTrue(wordChecker("CALOR", "word"))
     }
+    @Test
+    fun wordCheckerReturnsFalseWhenTheUserNameHasSpecialCharacters(){
+        assertFalse(wordChecker("1$·%&/%()/", "name"))
+    }
+    @Test
+    fun wordCheckerReturnsTrueWhenTheUserNameHasNoSpecialCharacters(){
+        assertTrue(wordChecker("Un Random", "name"))
+    }
 }

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Wordle_IvanMartinezKtTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-13T12:26:56" hostname="AHL-672-hA305-31" time="0.019">
+<testsuite name="Wordle_IvanMartinezKtTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-02-02T09:32:01" hostname="DESKTOP-EBEAVVU" time="0.024">
   <properties/>
-  <testcase name="characterPainterPaintsAllGreenWhenTheUserGuessIsCorrectWord()" classname="Wordle_IvanMartinezKtTest" time="0.019"/>
+  <testcase name="characterPainterPaintsAllGrayWhenCharIsNotInCorrectWord()" classname="Wordle_IvanMartinezKtTest" time="0.019"/>
+  <testcase name="wordCheckerReturnsFalseWhenGuessedWordHasNoAlphabetical()" classname="Wordle_IvanMartinezKtTest" time="0.001"/>
+  <testcase name="wordCheckerReturnsFalseWhenTheUserNameHasSpecialCharacters()" classname="Wordle_IvanMartinezKtTest" time="0.0"/>
+  <testcase name="characterPainterPaintsAllGreenWhenTheUserGuessIsCorrectWord()" classname="Wordle_IvanMartinezKtTest" time="0.001"/>
+  <testcase name="characterPainterPaintsYellowTheNumberOfCorrectTimes()" classname="Wordle_IvanMartinezKtTest" time="0.0"/>
+  <testcase name="wordCheckerReturnsTrueWhenThe5CharsAreAlphabeticalOnTheUserGuessWord()" classname="Wordle_IvanMartinezKtTest" time="0.0"/>
+  <testcase name="wordCheckerReturnsFalseWhenGuessedWordHasMoreThan5Letters()" classname="Wordle_IvanMartinezKtTest" time="0.001"/>
+  <testcase name="wordCheckerReturnsTrueWhenTheUserNameHasNoSpecialCharacters()" classname="Wordle_IvanMartinezKtTest" time="0.0"/>
+  <testcase name="wordCheckerReturnsFalseWhenGuessedWordHasALengthOf5ButACharIsNotAlphabetical()" classname="Wordle_IvanMartinezKtTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
