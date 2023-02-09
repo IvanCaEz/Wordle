@@ -284,7 +284,6 @@ fun main() {
 
         do {
             val random = File("Worlde/src/main/kotlin/Archivos/$language").readLines().random().uppercase()
-            println(random)
 
             var intents = 6
             var ronda = 0

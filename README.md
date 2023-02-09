@@ -53,7 +53,6 @@ when needed.
 
 - The user has 6 tries to guess the right word
 - Each word has 5 characters
-- The characters of the word doesn't repeat themselves
 - If the background of the character of the guessed word
   changes to **gray** it means it doesn't exist in the word.
 - If changes to **yellow** it means it exists in
@@ -62,17 +61,20 @@ when needed.
   correct position.
 
 ---
+### The Menu
+The menu will be the first thing the user sees.
+- Will greet the user and will offer them a list of options they can choose:
+- - `PLAY` Will start the game
+- - `HELP` Will explain the rules
+- - `HISTORY` Will call the menu for filtering the history of games than were saved
+- - `EXIT` Will end the program
 
-### Code
-
-The ***instruccions*** function will explain the user how to play
-and will ask the user to type ***START*** to begin.
 
 ### The Game
-
-The ***codi*** function is where the word pool of the game and all the logic of the application lies.
-- First will take a random word from the `wordPool` and will ask the user for a word.
-- If the word has repeated chars or doesn't have a length of 5 chars it will throw a warning and will ask
+- The user can choose to play in Catalan or in English.
+- First will ask the user to type their username.
+- Then will take a random word from the `wordPool` of the choosen language and will ask the user for a word.
+- If the word doesn't have a length of 5 chars or has chars that aren't alphabetical, it will throw a warning and will ask
   for a word again.
 
 ##### When the word is accepted and isn't the right guess
@@ -107,10 +109,22 @@ Will end the program and the game with a lose.
 
 #### After the game
 
-If the tries reach 0 or the user guesses the word it will ask if the user wants to continue playing,
-read the rules or stop playing.
+If the tries reach 0 or the user guesses the word it will ask if the user wants to 
+save the game to the database.
+Then will ask to continue playing,
+return to the menu or stop playing.
 
-![alt text](img/wordleMenu.png "Menu")
+![alt text](img/wordleSave.png "Save")
+![alt text](img/finalMenu.png "Menu")
+
+### The History
+When the user types `HISTORY` in the main menu, it will
+show options to filter the database.
+
+And will filter by the instruction
+
+![alt text](img/wordleFiltering.png "Filter by user")
+
 
 
 ---
