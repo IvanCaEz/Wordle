@@ -195,10 +195,12 @@ fun historyFormater(list: MutableList<String>){
  * If the user types PLAY will start the game.
  * If the user types HELP will call the instruccions function.
  * If types HISTORY will call the historyFilter function.
+ * If types RANKING will call the ranking function.
  * If types EXIT will exit the game.
  *
  * @see instruccions
  * @see historyFilter
+ * @see ranking
  * @return A boolean with the trigger for starting or ending the game
  */
 fun menu(): Boolean {
@@ -211,6 +213,8 @@ fun menu(): Boolean {
                 |- Si vols veure les instruccions entra $green$bold$box HELP $reset
                 |
                 |- Si vols veure l'historial de partides entra $cyan$bold$box HISTORY $reset
+                |
+                |- Si vols veure el ranking d'usuaris entra $yellow$bold$box RANKING $reset
                 |
                 |- Si has canviat d'idea i t'en vols anar, entra $red$bold$box EXIT $reset""".trimMargin())
 
@@ -229,6 +233,10 @@ fun menu(): Boolean {
             message = false
             wantToPlay = true
             instruccions()
+        }
+        else if (instruction.uppercase() == "RANKING" || instruction.uppercase() == "SALIR") {
+            println("═════════════$yellow$bold RANKING $reset═════════════")
+            ranking()
         }
         else if (instruction.uppercase() == "EXIT" || instruction.uppercase() == "SALIR") {
             println("Fins un altre $pink$bold(~‾▿‾)~$reset")
@@ -333,6 +341,7 @@ fun main() {
 
             if (saveToHistory.uppercase() == "SAVE") {
                 fileMaker(userName, winOrLose, random, ronda)
+                println("S'ha desat la teva partida\n")
             } else println("Com vulguis $bold$cyan╮(￣～￣)╭$reset\n")
 
             println("""- Si vols tornar a jugar entra $yellow$bold$box AGAIN $reset
@@ -464,4 +473,85 @@ fun characterPainter(userGuess: String, random: String): String {
         formatedHistory += history[lletra]
     }
     return formatedHistory
+}
+/**
+ * This function will filter the history and will only add to a new list the
+ * lines where it has been won the game.
+ *
+ * Then will iterate that list and will add to another two lists the username registered
+ * in the filtered history.
+ *
+ * After that will iterate one of the lists and will check if that username is present in
+ * the other list, if it is, will iterate again the first list and will check if the username
+ * is presented again, if it is, will add 1 to their points.
+ * When it ends, will remove that username on the second list a number of times equal
+ * to their points, so the previous condition can't be repeated.  * Then will add to a new list,
+ * a pair consisting of the username and their points.
+ *
+ * Finally, the list of pairs will be ordered by points and will be iterated,
+ * printing the formatted ranking.
+ *
+ */
+fun ranking(){
+    val rankingList = mutableListOf<String>()
+    BufferedReader(FileReader(file)).use {
+        it.lines().forEach() {
+            if (it.contains("true")){
+                rankingList.add(it)
+            }
+        }
+    }
+    if (rankingList.isEmpty()){
+        println("No hi han partides guanyades.\n Retornant al menú...\n")
+    }
+
+    val userList = mutableListOf<String>()
+    val userListPoints = mutableListOf<Pair<String, Int>>()
+    val userListCopy = mutableListOf<String>()
+
+    for (i in 0..rankingList.lastIndex){
+        val userName = rankingList[i].split(",")[0]
+        userList.add(userName)
+        userListCopy.add(userName)
+    }
+    for (i in 0..userList.lastIndex){
+        var points = 0
+        if (userList[i] in userListCopy){
+            for (j in 0..userList.lastIndex){
+                if (userList[i] == userList[j]){
+                    points++
+                }
+            }
+            userListPoints.add(userList[i] to points)
+            repeat(points){
+                userListCopy.remove(userList[i])
+            }
+        }
+    }
+    val orderedList = userListPoints.sortedByDescending { it -> it.second }
+    for (i in 0..orderedList.lastIndex){
+        var spaces = ""
+        var firstPlaceSpaces = ""
+        repeat(8){
+            firstPlaceSpaces += " "
+        }
+        when (((orderedList[i].first).length)){
+            in 0..4 -> spaces = "             "
+            in 4..6 -> spaces = "           "
+            7 -> spaces = "         "
+            8 -> spaces = "        "
+            in 9..10 -> spaces = "       "
+            in 11..15 -> spaces = "     "
+        }
+        if (i == 0){
+            println("$blue═══════════════════════════════════$reset")
+            println("$yellow$bold✩°｡⋆ $reset$bold${orderedList[i].first} $yellow$bold⋆｡°✩$reset$spaces $bold$box$yellow ${orderedList[i].second} $reset")
+            println("$blue═══════════════════════════════════$reset")
+        }
+        else{
+            println(""" $bold ${orderedList[i].first} $reset $spaces$firstPlaceSpaces $bold$box$gold ${orderedList[i].second} $reset
+            |═══════════════════════════════════
+        """.trimMargin())
+        }
+    }
 }

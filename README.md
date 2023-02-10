@@ -67,7 +67,11 @@ The menu will be the first thing the user sees.
 - - `PLAY` Will start the game
 - - `HELP` Will explain the rules
 - - `HISTORY` Will call the menu for filtering the history of games than were saved
+- - `RANKING` Will print the ranking of the users who saved their games
 - - `EXIT` Will end the program
+
+![alt text](img/wordleMenu.png "Main menu")
+
 
 
 ### The Game
@@ -111,10 +115,12 @@ Will end the program and the game with a lose.
 
 If the tries reach 0 or the user guesses the word it will ask if the user wants to 
 save the game to the database.
+
+![alt text](img/wordleSave.png "Save")
+
 Then will ask to continue playing,
 return to the menu or stop playing.
 
-![alt text](img/wordleSave.png "Save")
 ![alt text](img/finalMenu.png "Menu")
 
 ### The History
@@ -125,7 +131,13 @@ And will filter by the instruction
 
 ![alt text](img/wordleFiltering.png "Filter by user")
 
+### The Ranking
+When the user types `RANKING` in the main menu, it will
+show the ranking.
 
+Will only show the users who won their games.
+
+![alt text](img/wordleRanking.png "Ranking")
 
 ---
 
@@ -134,5 +146,3 @@ And will filter by the instruction
 This project is licensed under the [GNU Affero General Public License v3.0](https://choosealicense.com/licenses/agpl-3.0/) 
 
 See the [LICENSE.md](LICENSE) file for details
-
-
